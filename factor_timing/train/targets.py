@@ -162,7 +162,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel",  choices=["t2", "gdelt"], required=True)
-    ap.add_argument("--window", type=int, choices=[12, 24], required=True)
+    ap.add_argument("--window", type=int, required=True)
     args = ap.parse_args()
     p = build_targets(args.panel, args.window)
     df = pd.read_parquet(p)

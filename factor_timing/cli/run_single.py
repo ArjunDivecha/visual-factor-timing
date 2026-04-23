@@ -181,10 +181,12 @@ def train_factor_folds(
         _append_log(progress_log, {
             "ts": time.time(), "run_id": run_id, "factor": factor, "fold": fold,
             "event": "fit",
-            "ic_train": ic_tr,
-            "val_loss": stats["best_val_loss"],
-            "epochs":   stats["epochs"],
-            "wall_s":   dt,
+            "ic_train":   ic_tr,
+            "val_loss":   stats["best_val_loss"],
+            "epochs":     stats["epochs"],
+            "best_epoch": stats.get("best_epoch", -1),
+            "final_lr":   stats.get("final_lr", float("nan")),
+            "wall_s":     dt,
         })
         if wb is not None:
             if fit_counter_ref is not None:
@@ -193,12 +195,14 @@ def train_factor_folds(
             else:
                 step = None
             wb.log({
-                "fit/ic_train": ic_tr,
-                "fit/val_loss": stats["best_val_loss"],
-                "fit/epochs":   stats["epochs"],
-                "fit/wall_s":   dt,
-                "fit/factor":   factor,
-                "fit/fold":     fold,
+                "fit/ic_train":    ic_tr,
+                "fit/val_loss":    stats["best_val_loss"],
+                "fit/epochs":      stats["epochs"],
+                "fit/best_epoch":  stats.get("best_epoch", -1),
+                "fit/final_lr":    stats.get("final_lr", float("nan")),
+                "fit/wall_s":      dt,
+                "fit/factor":      factor,
+                "fit/fold":        fold,
             }, step=step)
         pbar.update(1)
 
@@ -372,7 +376,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel",   default="t2",  choices=["t2", "gdelt"])
-    ap.add_argument("--window",  type=int, default=12, choices=[12, 24])
+    ap.add_argument("--window",  type=int, default=12)
     ap.add_argument("--arch",    default="cnn", choices=["cnn", "cnn_lstm"])
     ap.add_argument("--image",   default="mxx", choices=["mxx", "jkx"])
     ap.add_argument("--loss",    default="mse", choices=["mse", "mae"])

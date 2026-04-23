@@ -49,8 +49,12 @@ class TrainConfig:
     beta2:     float = 0.99
     eps:       float = 1e-7
     batch_size: int  = 32768           # 2**15 per paper
-    max_epochs: int  = 100
-    patience:   int  = 7
+    max_epochs: int  = 200             # was 100 — let the model train longer
+    patience:   int  = 15              # was 7  — require a real plateau before stopping
+    min_delta:  float = 1e-4           # minimum val_loss improvement to reset counter
+    lr_reduce_patience: int = 6        # halve LR if val stagnates this long
+    lr_reduce_factor:   float = 0.5
+    min_lr:    float = 1e-5            # floor for the scheduler
     loss:      Literal["mse", "mae"] = "mse"
     device:    str = field(default_factory=_default_device)
 
@@ -92,6 +96,13 @@ def train_one(
         model.parameters(), lr=cfg.lr,
         betas=(cfg.beta1, cfg.beta2), eps=cfg.eps,
     )
+    sched = torch.optim.lr_scheduler.ReduceLROnPlateau(
+        opt, mode="min",
+        factor=cfg.lr_reduce_factor,
+        patience=cfg.lr_reduce_patience,
+        min_lr=cfg.min_lr,
+        threshold=cfg.min_delta, threshold_mode="abs",
+    )
 
     best_val = float("inf")
     best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
@@ -127,10 +138,16 @@ def train_one(
                 w    = torch.cat(ws)
                 val_loss = _weighted_loss(pred, y, w, cfg.loss).item()
 
-        history.append({"epoch": epoch, "val_loss": val_loss})
+        current_lr = opt.param_groups[0]["lr"]
+        history.append({"epoch": epoch, "val_loss": val_loss, "lr": current_lr})
 
-        # ── Early stopping ────────────────────────────────────────────────
-        if val_loss < best_val - 1e-9:
+        # LR scheduler step (uses its own plateau counter, independent of
+        # the early-stopping counter below)
+        if np.isfinite(val_loss):
+            sched.step(val_loss)
+
+        # ── Early stopping with min_delta threshold ───────────────────────
+        if val_loss < best_val - cfg.min_delta:
             best_val = val_loss
             best_state = {k: v.detach().clone() for k, v in model.state_dict().items()}
             epochs_no_improve = 0
@@ -140,10 +157,14 @@ def train_one(
                 break
 
     model.load_state_dict(best_state)
+    best_epoch = (min(range(len(history)), key=lambda i: history[i]["val_loss"])
+                  if history else 0)
     return model, {
         "best_val_loss": best_val,
-        "epochs": len(history),
-        "history": history,
+        "best_epoch":    best_epoch,
+        "epochs":        len(history),
+        "final_lr":      history[-1]["lr"] if history else cfg.lr,
+        "history":       history,
     }
 
 

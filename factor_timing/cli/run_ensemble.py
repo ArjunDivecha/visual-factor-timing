@@ -105,7 +105,7 @@ def main():
     logging.basicConfig(level=logging.WARNING, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel",     default="t2",  choices=["t2", "gdelt"])
-    ap.add_argument("--window",    type=int, default=12, choices=[12, 24])
+    ap.add_argument("--window",    type=int, default=12)
     ap.add_argument("--n-folds",   type=int, default=5)
     ap.add_argument("--train-end", default="2018-12-31")
     ap.add_argument("--project",   default="visual-factor-timing")

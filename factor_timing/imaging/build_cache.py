@@ -82,7 +82,7 @@ def build_cache(
 ) -> dict:
     """Render all JKX images for a panel/window and write memmap + index."""
     assert panel in OHLC_PARQUET, panel
-    assert window in (12, 24), window
+    assert window >= 6, f"window must be at least 6, got {window}"
 
     ohlc_path = Path(OHLC_PARQUET[panel])
     if not ohlc_path.exists():
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
     ap = argparse.ArgumentParser()
     ap.add_argument("--panel",  choices=["t2", "gdelt"], required=True)
-    ap.add_argument("--window", type=int, choices=[12, 24], required=True)
+    ap.add_argument("--window", type=int, required=True)
     args = ap.parse_args()
     res = build_cache(args.panel, args.window)
     print(res)
