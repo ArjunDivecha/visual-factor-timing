@@ -25,12 +25,21 @@ DEPENDENCIES:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Callable, Literal, Optional, Tuple
 
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, Dataset
+
+
+def _default_device() -> str:
+    """Prefer Apple Silicon MPS > CUDA > CPU."""
+    if torch.backends.mps.is_available() and torch.backends.mps.is_built():
+        return "mps"
+    if torch.cuda.is_available():
+        return "cuda"
+    return "cpu"
 
 
 @dataclass
@@ -43,7 +52,7 @@ class TrainConfig:
     max_epochs: int  = 100
     patience:   int  = 7
     loss:      Literal["mse", "mae"] = "mse"
-    device:    str = "cpu"
+    device:    str = field(default_factory=_default_device)
 
 
 def _weighted_loss(pred, target, weight, kind: str) -> torch.Tensor:
