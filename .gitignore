@@ -29,3 +29,8 @@ Thumbs.db
 .env*
 *.key
 *credentials*
+
+# Agent/tool metadata
+.pks/
+.claude/
+.cursor/
