@@ -1,0 +1,31 @@
+# Data artifacts — reproducible from xlsx inputs in ~/Dropbox/AAA Backup/A Complete
+factor_timing/outputs/
+*.parquet
+*.npy
+*.png
+*.jpg
+
+# Source PDF
+paper.pdf
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Secrets
+.env*
+*.key
+*credentials*
