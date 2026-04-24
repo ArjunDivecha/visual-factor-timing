@@ -86,8 +86,8 @@ class RunSpec:
     n_folds:    int   = 5
     train_end:  str   = "2018-12-31"
     val_frac:   float = 0.15      # of training window
-    max_epochs: int   = 100
-    patience:   int   = 7
+    max_epochs: int   = 200       # let the model train longer
+    patience:   int   = 15        # require a real plateau before stopping
     batch_size: int   = 256       # smaller than paper's 2^15 because dataset is only ~thousands
     device:     Optional[str] = None
     wandb_project: str = "visual-factor-timing"

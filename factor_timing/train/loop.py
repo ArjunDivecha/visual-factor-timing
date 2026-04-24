@@ -52,7 +52,7 @@ class TrainConfig:
     max_epochs: int  = 200             # was 100 — let the model train longer
     patience:   int  = 15              # was 7  — require a real plateau before stopping
     min_delta:  float = 1e-4           # minimum val_loss improvement to reset counter
-    lr_reduce_patience: int = 6        # halve LR if val stagnates this long
+    lr_reduce_patience: int = 4        # halve LR if val stagnates this long (must be < patience)
     lr_reduce_factor:   float = 0.5
     min_lr:    float = 1e-5            # floor for the scheduler
     loss:      Literal["mse", "mae"] = "mse"
