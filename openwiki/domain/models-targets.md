@@ -34,32 +34,6 @@ The base ensemble grid in `train/ensemble.py` uses four target transforms:
 
 The important operational point is that target transforms are a separate axis from image type and architecture, so they participate in the 64-combo sweep.
 
-## Alternative target experimentation
-`factor_timing/train/alt_targets.py` expands the target space beyond the base four transforms.
-It defines:
-- `raw`
-- `sign`
-- `multi_horizon`
-- `drawdown_prob`
-- `quantile`
-- `topk_member`
-- `volatility`
-
-It also provides:
-- per-target head definitions,
-- target-specific loss functions,
-- `AltTargetDataset`, which merges alt targets into a base image dataset.
-
-This module is important because it shows where the repository is experimenting beyond the paper-default setup.
-
-## Portfolio-level / top-K objective
-`factor_timing/train/portfolio_loss.py` and `factor_timing/train/loop_portfolio.py` implement a different learning objective:
-- the model is scored on the spread between soft top-K and soft bottom-K portfolios,
-- training operates on whole-month batches rather than individual samples,
-- a cosine-annealed temperature sharpens the portfolio selection over training.
-
-This is the right path when the goal is portfolio construction rather than pointwise return prediction.
-
 ## What the outputs mean
 The main training flows ultimately produce:
 - `f_hat`: forecast score or expected return proxy,
@@ -70,5 +44,3 @@ These values are then used in Excel workbooks, parquet outputs, and evaluation s
 
 ## Practical cautions
 - Do not assume the regression target and the evaluation metric are identical. Some runners predict one transformed target but rank by another scalar score.
-- `drawdown_prob` and `volatility` are risk-oriented targets and invert or reshape the score semantics.
-- The top-K portfolio objective is month-level, so it needs `MonthlyDataset` and a mask-aware collate function.

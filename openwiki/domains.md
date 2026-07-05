@@ -55,8 +55,6 @@ It also supports two weighting schemes:
 - `weight_ew`
 - `weight_ewpm`
 
-The alternative-target path in `train/alt_targets.py` adds target families such as sign, multi-horizon return, drawdown probability, top-K membership, quantile, and volatility.
-
 ## Model families
 
 The repository currently has:
@@ -79,21 +77,12 @@ The model files are intentionally small; most training behavior lives in the loo
 
 This is the core mechanism behind the ensemble and backtest outputs.
 
-## Portfolio-level loss
-
-`monthly_dataset.py`, `portfolio_loss.py`, and `loop_portfolio.py` enable a different objective: train the model to widen the realized return spread between the long and short sides of a cross-sectional portfolio rather than predict each factor’s return directly.
-
-That path exists because the project’s evaluation metrics ultimately care about portfolio performance, not just pointwise prediction accuracy.
-
 ## Source references
 
 - `factor_timing/data/factor_loader.py`
 - `factor_timing/imaging/build_cache.py`
 - `factor_timing/train/dataset.py`
 - `factor_timing/train/targets.py`
-- `factor_timing/train/alt_targets.py`
 - `factor_timing/train/ensemble.py`
 - `factor_timing/train/monthly_dataset.py`
-- `factor_timing/train/portfolio_loss.py`
-- `factor_timing/train/loop_portfolio.py`
 - `factor_timing/train/clustering.py`

@@ -45,25 +45,9 @@ This is the canonical path for reproducing the paper-style ensemble outputs.
 
 This is the right workflow when the question is not “which combo is best?” but “which window and training cutoff are most robust?”
 
-## 5) Full-period comparisons
+The sweep runner computes strategy metrics for each point, including OOS IC, rank IC, HML quintile Sharpe, Top-3 long/short and Top-15 long-only Sharpes, and a baseline equal-weight Sharpe.
 
-`factor_timing.cli.run_full_period` trains each combo on the full available history and produces a full-period in-sample comparison.
-
-This workflow exists to compare strategies over the entire panel history, but the README and code both warn that the numbers are in-sample and may overstate deployable performance.
-
-## 6) Walk-forward evaluation
-
-Three walk-forward runners exist:
-
-- `run_walkforward.py` — standard regression baseline.
-- `run_walkforward_topk.py` — top-K spread loss variant.
-- `run_walkforward_alt_targets.py` — alternative-target family comparison.
-
-These runners expand the train window over time, predict the next block of months, and then concatenate all predictions into a continuous OOS series.
-
-The walk-forward path is the most important one when you want a conservative estimate of real-time usefulness.
-
-## 7) Run monitoring
+## 5) Run monitoring
 
 `factor_timing.dashboard.build` turns a run directory into a single-file HTML dashboard. It is designed to monitor `progress.jsonl` during long jobs.
 
@@ -72,9 +56,8 @@ If a run is already underway, this is the first place to look for progress visib
 ## Change-oriented notes for future agents
 
 - If you change data schema or cache layout, update the loader, dataset, and every runner that reads cached parquet files.
-- If you change train/val splitting rules, re-check both `run_single.py` and the walk-forward scripts; they implement slightly different conventions.
+- If you change train/val splitting rules, re-check `run_single.py` and the ensemble logic; they implement the split conventions.
 - If you change how `omega` is derived from forecasts, update both the ensemble logic and the backtest metrics.
-- If you change the portfolio-loss path, ensure the monthly dataset collation still handles ragged month sizes correctly.
 
 ## Source references
 
@@ -87,8 +70,4 @@ If a run is already underway, this is the first place to look for progress visib
 - `factor_timing/cli/run_single.py`
 - `factor_timing/cli/run_ensemble.py`
 - `factor_timing/cli/run_sweep.py`
-- `factor_timing/cli/run_full_period.py`
-- `factor_timing/cli/run_walkforward.py`
-- `factor_timing/cli/run_walkforward_topk.py`
-- `factor_timing/cli/run_walkforward_alt_targets.py`
 - `factor_timing/dashboard/build.py`

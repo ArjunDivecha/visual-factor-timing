@@ -7,8 +7,7 @@ Common subtrees include:
 - `cache_{panel}_w{window}_mxx/` — MXX trajectory cache,
 - `runs/<run_id>/` — single-run artifacts,
 - `runs/ENSEMBLE_<group>/` — aggregated ensemble outputs,
-- `sweeps/<sweep_id>/` — sweep summaries,
-- `evolve/` — historical experiment snapshots and code variants.
+- `sweeps/<sweep_id>/` — sweep summaries.
 
 ## Run artifacts
 A typical run directory contains some subset of:
@@ -28,7 +27,6 @@ The CLI runners conditionally use Weights & Biases when `WANDB_API_KEY` is avail
 Several runners and builders embed absolute Dropbox paths to the source Excel workbooks and output directories. Examples appear in:
 - `factor_timing/cli/run_single.py`
 - `factor_timing/cli/run_ensemble.py`
-- `factor_timing/cli/run_walkforward.py`
 - `factor_timing/dashboard/build.py`
 
 These paths are environment-specific and should be treated as operational assumptions, not portable defaults.

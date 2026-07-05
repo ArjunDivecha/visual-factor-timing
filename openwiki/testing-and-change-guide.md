@@ -10,7 +10,6 @@ Files:
 
 - `factor_timing/data/factor_loader.py`
 - `factor_timing/train/targets.py`
-- `factor_timing/train/alt_targets.py`
 
 Checks:
 
@@ -39,14 +38,11 @@ Files:
 - `factor_timing/models/cnn1d.py`
 - `factor_timing/models/cnn2d.py`
 - `factor_timing/train/loop.py`
-- `factor_timing/train/loop_portfolio.py`
-- `factor_timing/train/portfolio_loss.py`
 
 Checks:
 
 - Run a tiny training job and confirm the model converges without shape errors.
 - Confirm early stopping still triggers after the intended minimum epoch floor.
-- Confirm the portfolio-loss path still masks padded factor slots correctly.
 
 ### Ensemble and backtest runners
 
@@ -56,17 +52,12 @@ Files:
 - `factor_timing/cli/run_single.py`
 - `factor_timing/cli/run_ensemble.py`
 - `factor_timing/cli/run_sweep.py`
-- `factor_timing/cli/run_full_period.py`
-- `factor_timing/cli/run_walkforward.py`
-- `factor_timing/cli/run_walkforward_topk.py`
-- `factor_timing/cli/run_walkforward_alt_targets.py`
 
 Checks:
 
 - Make sure generated run directories contain `summary.json`, `progress.jsonl`, and `forecasts.parquet`.
 - Confirm Excel output still matches the optimizer workbook schema.
 - Confirm the IC-weighting logic still drops non-positive IC combinations.
-- Confirm walk-forward runners still respect the intended cold-start period and epoch scheduling.
 
 ### Dashboard
 
@@ -86,7 +77,6 @@ Use small, bounded runs rather than full sweeps when validating a change.
 Good smoke tests:
 
 - One `run_single` configuration with low `n_folds`
-- One `run_walkforward` configuration on a small window
 - One dashboard build from an existing run directory
 - One cache build for each panel/window combination you touched
 
@@ -98,17 +88,13 @@ The git history indicates the project recently added:
 - a 64-combo ensemble orchestrator
 - W&B-backed single-run and dashboard support
 - MonthlyDataset support for cross-sectional training
-- portfolio-level loss experiments
-- alternative targets and walk-forward runners
 
 Those additions mean shape assumptions and split logic are the most likely places for regressions.
 
 ## Source references
 
 - `factor_timing/train/loop.py`
-- `factor_timing/train/loop_portfolio.py`
 - `factor_timing/train/monthly_dataset.py`
-- `factor_timing/train/portfolio_loss.py`
 - `factor_timing/train/ensemble.py`
 - `factor_timing/cli/*.py`
 - `factor_timing/dashboard/build.py`

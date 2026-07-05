@@ -51,36 +51,12 @@ Purpose:
 
 This is the widest orchestration mode in the repo and is useful when comparing lookback windows and train cutoffs under one consistent evaluation harness.
 
-## Full-period fit
-### `factor_timing.cli.run_full_period`
-Purpose:
-- train all 32 combos for a single image branch,
-- produce full-history predictions rather than only the last OOS segment.
-
-Important caveat:
-- the module docstring explicitly says these metrics are in-sample or near-in-sample and should be treated as upper bounds, not deployment-quality forecast estimates.
-
-## Walk-forward backtests
-### `factor_timing.cli.run_walkforward`
-Purpose:
-- expanding-window OOS backtest for one fixed regression combo,
-- average multiple seeded folds per epoch,
-- write a walk-forward forecast series and Excel output.
-
-This runner is the conservative evaluation path for the base regression setup.
-
-### `factor_timing.cli.run_walkforward_alt_targets`
-Purpose:
-- evaluate alternative targets such as sign, multi-horizon, drawdown probability, quantile, top-k membership, and volatility.
-
-This runner exists for experimentation around target engineering rather than the base regression objective.
-
-### `factor_timing.cli.run_walkforward_topk`
-Purpose:
-- walk-forward backtest using a portfolio-level top-K spread objective rather than pointwise regression.
-- it depends on `MonthlyDataset` and `train_one_portfolio()`.
-
-This is the main path for top-K / spread-oriented training experiments.
+The sweep runner's `_strategy_metrics()` function computes, for each `window:train_end` point:
+- monthly average IC and rank IC,
+- HML quintile long-short Sharpe,
+- Top-3 long/short Sharpe,
+- Top-15 long-only Sharpe,
+- baseline equal-weight Sharpe for comparison.
 
 ## Dashboard generation
 ### `factor_timing.dashboard.build`

@@ -5,7 +5,7 @@ The repository’s core pipeline is:
 1. build monthly factor panels from external optimizer spreadsheets,
 2. convert them into cacheable model inputs,
 3. load the cached inputs through dataset wrappers,
-4. train neural nets on either per-sample or whole-month objectives,
+4. train neural nets on either per-sample or cross-sectional objectives,
 5. aggregate forecasts into timing weights and evaluation outputs.
 
 This flow is implemented in small, composable modules rather than one monolithic training script.
@@ -20,7 +20,7 @@ This flow is implemented in small, composable modules rather than one monolithic
 
 Why it exists:
 - the original spreadsheets are not model-ready,
-- the monthly OHLC/vol tables become the common input for both image branches and alternative target builders.
+- the monthly OHLC/vol tables become the common input for both image branches and the target builder.
 
 ## Cache generation
 There are two cache builders:
@@ -41,7 +41,7 @@ It returns `(X, y, w)` tuples and supports:
 - sample-weight selection (`weight_ew`, `weight_ewpm`),
 - factor filters and date filters for train/val/test splits.
 
-`factor_timing/train/monthly_dataset.py` groups samples by month for portfolio objectives. It pads ragged month sizes and emits a mask so losses can operate on full cross-sections.
+`factor_timing/train/monthly_dataset.py` groups samples by month for cross-sectional training. It pads ragged month sizes and emits a mask so losses can operate on full cross-sections.
 
 ## Training layer
 `factor_timing/train/loop.py` is the standard regression loop.
@@ -49,9 +49,6 @@ It provides:
 - `TrainConfig`,
 - `train_one()` with Adam, weighted MSE/MAE, ReduceLROnPlateau, and early stopping,
 - `predict()` for batched inference.
-
-`factor_timing/train/loop_portfolio.py` is the portfolio-level variant.
-It trains on whole-month batches and optimizes a long-short spread loss instead of pointwise regression.
 
 ## Ensemble layer
 `factor_timing/train/ensemble.py` defines the combinatorial experiment grid:

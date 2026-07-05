@@ -7,7 +7,7 @@ This repository implements a factor-timing research pipeline for the T2 and GDEL
 At a high level, the codebase supports three layers of work:
 
 1. **Data preparation** — turn daily/monthly optimizer workbooks into monthly OHLC and cached model inputs.
-2. **Modeling** — train 1D/2D CNN variants, plus CNN-LSTM variants, on MXX and JKX representations.
+2. **Modeling** — train 1D/2D CNN and CNN-LSTM variants on MXX and JKX representations.
 3. **Evaluation** — produce factor weights, backtest them as timed returns, and summarize IC, Sharpe, HML, and top-K spreads.
 
 ## Start here
@@ -25,10 +25,6 @@ At a high level, the codebase supports three layers of work:
 - `python -m factor_timing.cli.run_single`
 - `python -m factor_timing.cli.run_ensemble`
 - `python -m factor_timing.cli.run_sweep`
-- `python -m factor_timing.cli.run_full_period`
-- `python -m factor_timing.cli.run_walkforward`
-- `python -m factor_timing.cli.run_walkforward_alt_targets`
-- `python -m factor_timing.cli.run_walkforward_topk`
 - `python -m factor_timing.dashboard.build`
 
 ## Repository shape
@@ -36,10 +32,10 @@ At a high level, the codebase supports three layers of work:
 - `factor_timing/data/` — raw-to-monthly data preparation.
 - `factor_timing/imaging/` — image/trajectory cache builders.
 - `factor_timing/models/` — CNN and CNN-LSTM model definitions.
-- `factor_timing/train/` — datasets, training loops, clustering, targets, and portfolio-loss helpers.
+- `factor_timing/train/` — datasets, training loops, clustering, and targets.
 - `factor_timing/cli/` — experiment runners and backtests.
 - `factor_timing/dashboard/` — run monitoring dashboard.
-- `factor_timing/outputs/` — generated caches, run artifacts, sweeps, and evolve records.
+- `factor_timing/outputs/` — generated caches, run artifacts, and sweeps.
 
 ## Important constraints
 
