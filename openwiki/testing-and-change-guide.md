@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Testing and change guide"
+openwiki_generated: true
+---
+
 # Testing and change guide
 
 This repository does not appear to ship a formal automated test suite, so future changes should be verified with targeted script runs, smoke checks, and careful inspection of generated artifacts.

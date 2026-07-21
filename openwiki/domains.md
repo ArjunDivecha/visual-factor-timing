@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Domain concepts"
+openwiki_generated: true
+---
+
 # Domain concepts
 
 This repository uses a small set of recurring domain objects. Understanding them makes the rest of the code much easier to navigate.

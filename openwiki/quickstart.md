@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "OpenWiki quickstart"
+openwiki_generated: true
+---
+
 # OpenWiki quickstart
 
 This repository implements a factor-timing research pipeline for the T2 and GDELT panels. The code builds monthly factor data, renders two kinds of model inputs, trains neural nets, and aggregates predictions into timing weights and backtest outputs. The top-level README describes the project as a replication of Jia, Li, Zhang & Zhao (2025), *Timing the Factor Zoo via Deep Visualization*.

@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Outputs and operational caveats"
+openwiki_generated: true
+---
+
 # Outputs and operational caveats
 
 ## Output directory layout

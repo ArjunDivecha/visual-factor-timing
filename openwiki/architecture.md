@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Architecture"
+openwiki_generated: true
+---
+
 # Architecture
 
 The repository is organized as a data-to-backtest pipeline for factor timing.

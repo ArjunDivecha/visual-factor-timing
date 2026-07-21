@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Workflow runners"
+openwiki_generated: true
+---
+
 # Workflow runners
 
 ## Overview

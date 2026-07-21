@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Pipeline architecture"
+openwiki_generated: true
+---
+
 # Pipeline architecture
 
 ## Overview

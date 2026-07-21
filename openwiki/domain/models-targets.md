@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Models, targets, and objectives"
+openwiki_generated: true
+---
+
 # Models, targets, and objectives
 
 ## Model branches

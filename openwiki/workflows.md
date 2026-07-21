@@ -1,3 +1,9 @@
+---
+type: "Reference"
+title: "Workflows"
+openwiki_generated: true
+---
+
 # Workflows
 
 This page captures the main ways the repository is used in practice and the source files that govern each workflow.
