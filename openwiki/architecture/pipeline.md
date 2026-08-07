@@ -21,24 +21,25 @@ The repository's core pipeline is:
 
 This flow is implemented in small, composable modules rather than one monolithic training script.
 
-<!-- openwiki: mermaid parse failed and this diagram was converted to a text fence so it does not break rendering. Fix the diagram source and restore the mermaid fence. Parser error: Heuristic: an unescaped angle bracket inside a label breaks rendering; rephrase the label. -->
-```text
+```mermaid
 flowchart TD
-    A["external xlsx<br/>daily + monthly optimizer"] --> B["factor_loader.build_monthly_ohlc<br/>{panel}_monthly_ohlc.parquet"]
-    B --> C["build_cache.build_cache<br/>JKX uint8 images.npy + index.parquet"]
-    B --> D["build_mxx_cache.build_mxx_cache<br/>MXX float32 trajectories.npy + index.parquet"]
-    C --> E["targets.build_targets<br/>targets.parquet (raw,sigma,norm,pct,weight_ew,weight_ewpm)"]
-    C --> F["FactorImageDataset<br/>(JKX branch)"]
+    A["external xlsx daily + monthly optimizer"] --> B["factor_loader.build_monthly_ohlc - panel monthly_ohlc.parquet"]
+    B --> C["build_cache.build_cache - JKX uint8 images.npy + index.parquet"]
+    B --> D["build_mxx_cache.build_mxx_cache - MXX float32 trajectories.npy + index.parquet"]
+    C --> E["targets.build_targets - targets.parquet raw sigma norm pct weight_ew weight_ewpm"]
+    C --> F["FactorImageDataset JKX branch"]
     E --> F
-    D --> G["FactorImageDataset<br/>(MXX branch)"]
+    D --> G["FactorImageDataset MXX branch"]
     E --> G
-    F --> H["loop.train_one<br/>per-sample regression"]
+    F --> H["loop.train_one per-sample regression"]
     G --> H
-    H --> I["ensemble.aggregate_forecasts<br/>+ omega_from_forecasts"]
-    I --> J["f_hat, omega, timed_return"]
-    B --> K["clustering.cluster_at<br/>(GDELT pooled, leakage-aware)"]
+    H --> I["ensemble.aggregate_forecasts + omega_from_forecasts"]
+    I --> J["f_hat omega timed_return"]
+    B --> K["clustering.cluster_at GDELT pooled leakage-aware"]
     K --> H
 ```
+
+*Pipeline flow from external workbooks to monthly OHLC, parallel JKX/MXX caches and targets, datasets, training, and IC-weighted forecast aggregation.*
 
 ## Data construction
 `factor_timing/data/factor_loader.py` is the upstream normalization stage. It:
